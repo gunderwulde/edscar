@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "units": "SI",
+  "analysis": "2D-XZ",
+  "nodes": [
+    { "id": "A", "x": 0, "y": 0, "z": 0 },
+    { "id": "B", "x": 6, "y": 0, "z": 0 }
+  ],
+  "members": [
+    { "id": "E1", "i": "A", "j": "B", "material": "M1", "section": "S1" }
+  ],
+  "materials": [
+    { "id": "M1", "name": "Material ficticio (EI = 20000 kN m2)", "E": 200000000, "G": 80000000, "density": 0, "alpha": 0.000012 }
+  ],
+  "sections": [
+    { "id": "S1", "name": "Seccion ficticia", "A": 0.01, "Iy": 0.0001, "Iz": 0.0001, "J": 0.00001 }
+  ],
+  "supports": [
+    { "id": "SA", "node": "A", "fixed": [true, true, true, false, false, false] },
+    { "id": "SB", "node": "B", "fixed": [false, true, true, false, false, false] }
+  ],
+  "patterns": [
+    { "id": "G", "name": "Carga permanente", "kind": "D", "selfWeightFactor": 0 }
+  ],
+  "loads": [
+    { "id": "L1", "pattern": "G", "type": "member-uniform", "member": "E1", "w": [0, 0, -10], "frame": "global" }
+  ],
+  "cases": [
+    { "id": "C1", "name": "Permanente", "type": "static-linear", "terms": [{ "pattern": "G", "factor": 1 }] }
+  ],
+  "combinations": [
+    { "id": "K1", "name": "ELS caracteristica", "kind": "SLS", "terms": [{ "ref": "C1", "refType": "case", "factor": 1 }] }
+  ],
+  "settings": { "gravity": [0, 0, -9.81] }
+}

@@ -1,0 +1,238 @@
+/*
+ * Tokens de color y estilos del lienzo. Todos los colores salen de variables CSS --ec-*; el modo oscuro se activa
+ * por preferencia del sistema o con data-theme="dark" en <html> (data-theme="light" fuerza el claro).
+ * Los colores de patrón siguen la paleta de Okabe-Ito (apta para daltonismo); además cada símbolo lleva etiqueta
+ * de texto con el id del patrón, de modo que el color nunca es el único canal.
+ */
+.edscar-canvas {
+  --ec-bg: #ffffff;
+  --ec-grid-minor: #eef0f3;
+  --ec-grid-major: #d7dbe2;
+  --ec-axis: #9aa3b2;
+  --ec-member: #1f2937;
+  --ec-node: #111827;
+  --ec-node-fill: #ffffff;
+  --ec-support: #4b5563;
+  --ec-sel: #2563eb;
+  --ec-sel-halo: rgba(37, 99, 235, 0.28);
+  --ec-text: #111827;
+  --ec-halo: #ffffff;
+  --ec-panel: rgba(255, 255, 255, 0.92);
+  --ec-border: #cbd5e1;
+  --ec-diag-N: #b45309;
+  --ec-diag-V: #0f766e;
+  --ec-diag-M: #7c3aed;
+  --ec-defo: #dc2626;
+  --ec-react: #15803d;
+  --ec-error: #b91c1c;
+  --ec-pat-0: #0072b2;
+  --ec-pat-1: #d55e00;
+  --ec-pat-2: #009e73;
+  --ec-pat-3: #cc79a7;
+  --ec-pat-4: #b07d00;
+  --ec-pat-5: #3a8fd0;
+  --ec-pat-6: #6b21a8;
+  --ec-pat-7: #4b5563;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .edscar-canvas {
+    --ec-bg: #111827;
+    --ec-grid-minor: #1b2535;
+    --ec-grid-major: #2a3649;
+    --ec-axis: #64748b;
+    --ec-member: #e5e7eb;
+    --ec-node: #f3f4f6;
+    --ec-node-fill: #111827;
+    --ec-support: #9ca3af;
+    --ec-sel: #60a5fa;
+    --ec-sel-halo: rgba(96, 165, 250, 0.3);
+    --ec-text: #f3f4f6;
+    --ec-halo: #111827;
+    --ec-panel: rgba(17, 24, 39, 0.92);
+    --ec-border: #374151;
+    --ec-diag-N: #fbbf24;
+    --ec-diag-V: #2dd4bf;
+    --ec-diag-M: #c4b5fd;
+    --ec-defo: #f87171;
+    --ec-react: #4ade80;
+    --ec-error: #fca5a5;
+    --ec-pat-0: #56b4e9;
+    --ec-pat-1: #ff8c42;
+    --ec-pat-2: #2fd5a0;
+    --ec-pat-3: #f0a6cf;
+    --ec-pat-4: #f0c040;
+    --ec-pat-5: #8ec5f0;
+    --ec-pat-6: #c4a1f0;
+    --ec-pat-7: #cbd5e1;
+  }
+}
+
+:root[data-theme="dark"] .edscar-canvas {
+  --ec-bg: #111827;
+  --ec-grid-minor: #1b2535;
+  --ec-grid-major: #2a3649;
+  --ec-axis: #64748b;
+  --ec-member: #e5e7eb;
+  --ec-node: #f3f4f6;
+  --ec-node-fill: #111827;
+  --ec-support: #9ca3af;
+  --ec-sel: #60a5fa;
+  --ec-sel-halo: rgba(96, 165, 250, 0.3);
+  --ec-text: #f3f4f6;
+  --ec-halo: #111827;
+  --ec-panel: rgba(17, 24, 39, 0.92);
+  --ec-border: #374151;
+  --ec-diag-N: #fbbf24;
+  --ec-diag-V: #2dd4bf;
+  --ec-diag-M: #c4b5fd;
+  --ec-defo: #f87171;
+  --ec-react: #4ade80;
+  --ec-error: #fca5a5;
+  --ec-pat-0: #56b4e9;
+  --ec-pat-1: #ff8c42;
+  --ec-pat-2: #2fd5a0;
+  --ec-pat-3: #f0a6cf;
+  --ec-pat-4: #f0c040;
+  --ec-pat-5: #8ec5f0;
+  --ec-pat-6: #c4a1f0;
+  --ec-pat-7: #cbd5e1;
+}
+
+.edscar-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  overflow: hidden;
+  background: var(--ec-bg);
+  color: var(--ec-text);
+  font: 12px/1.3 system-ui, sans-serif;
+  touch-action: none;
+  user-select: none;
+  outline: none;
+}
+.edscar-canvas:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--ec-sel);
+}
+.edscar-canvas[data-tool="node"],
+.edscar-canvas[data-tool="member"] {
+  cursor: crosshair;
+}
+.edscar-canvas[data-tool="support"] {
+  cursor: cell;
+}
+.ec-svg {
+  display: block;
+}
+
+.ec-grid line.minor { stroke: var(--ec-grid-minor); stroke-width: 1; }
+.ec-grid line.major { stroke: var(--ec-grid-major); stroke-width: 1; }
+.ec-grid line.axis { stroke: var(--ec-axis); stroke-width: 1.2; }
+.ec-gizmo line { stroke: var(--ec-axis); stroke-width: 1.5; }
+.ec-gizmo polygon { fill: var(--ec-axis); }
+.ec-gizmo text { fill: var(--ec-text); font-size: 11px; }
+
+.ec-member { stroke: var(--ec-member); stroke-width: 3; stroke-linecap: round; }
+.ec-member.selected { stroke: var(--ec-sel); }
+.ec-sel-halo { stroke: var(--ec-sel-halo); stroke-width: 10; stroke-linecap: round; }
+.ec-node { fill: var(--ec-node-fill); stroke: var(--ec-node); stroke-width: 1.6; }
+.ec-node.selected { stroke: var(--ec-sel); stroke-width: 2.4; fill: var(--ec-sel); }
+.ec-node-label { fill: var(--ec-text); font-size: 11px; paint-order: stroke; stroke: var(--ec-halo); stroke-width: 3px; }
+.ec-release { fill: var(--ec-bg); stroke: var(--ec-member); stroke-width: 1.6; }
+.ec-supports path, .ec-supports circle { fill: none; stroke: var(--ec-support); stroke-width: 1.8; stroke-linejoin: round; }
+.ec-supports path:first-child { fill: var(--ec-bg); }
+
+.ec-load { color: var(--ec-text); }
+.ec-load line, .ec-load .ec-arc { stroke: currentColor; stroke-width: 1.6; fill: none; }
+.ec-load .ec-head { fill: currentColor; stroke: none; }
+.ec-load .ec-load-fill { fill: currentColor; fill-opacity: 0.16; stroke: currentColor; stroke-width: 1; stroke-opacity: 0.6; }
+.ec-load.dashed line, .ec-load.dashed .ec-arc { stroke-dasharray: 4 3; }
+.ec-load.selected line, .ec-load.selected .ec-arc { stroke-width: 3; }
+.ec-load.selected .ec-load-fill { fill-opacity: 0.32; stroke-width: 2; }
+.ec-label { fill: currentColor; font-size: 11px; font-weight: 600; paint-order: stroke; stroke: var(--ec-halo); stroke-width: 3px; stroke-linejoin: round; }
+.ec-results .ec-label { fill: var(--ec-text); }
+
+.ec-results.stale { opacity: 0.45; }
+.ec-diagram polygon { fill-opacity: 0.22; stroke: none; }
+.ec-diagram polyline { fill: none; stroke-width: 1.8; stroke-linejoin: round; }
+.ec-diagram-N polygon { fill: var(--ec-diag-N); } .ec-diagram-N polyline { stroke: var(--ec-diag-N); }
+.ec-diagram-V polygon { fill: var(--ec-diag-V); } .ec-diagram-V polyline { stroke: var(--ec-diag-V); }
+.ec-diagram-M polygon { fill: var(--ec-diag-M); } .ec-diagram-M polyline { stroke: var(--ec-diag-M); }
+.ec-deformed { fill: none; stroke: var(--ec-defo); stroke-width: 2.2; stroke-dasharray: 6 3; stroke-linejoin: round; }
+.ec-reaction line, .ec-reaction .ec-arc { stroke: var(--ec-react); stroke-width: 2.2; fill: none; }
+.ec-reaction .ec-head { fill: var(--ec-react); }
+
+.ec-rubber { stroke: var(--ec-sel); stroke-width: 1.6; stroke-dasharray: 5 4; }
+.ec-cursor circle { fill: none; stroke: var(--ec-sel); stroke-width: 1.4; }
+.ec-cursor.node circle { stroke-width: 2.2; }
+.ec-box { fill: var(--ec-sel-halo); stroke: var(--ec-sel); stroke-width: 1; stroke-dasharray: 4 3; }
+
+.ec-legend {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  max-width: 240px;
+  padding: 6px 8px;
+  background: var(--ec-panel);
+  border: 1px solid var(--ec-border);
+  border-radius: 6px;
+}
+.ec-legend h2 { margin: 0 0 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+.ec-legend ul { margin: 0; padding: 0; list-style: none; }
+.ec-legend li { display: flex; align-items: center; gap: 6px; padding: 1px 0; }
+.ec-legend li.active .name { font-weight: 700; text-decoration: underline; }
+.ec-legend label { display: inline-flex; align-items: center; gap: 4px; }
+.ec-legend .swatch { width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--ec-border); display: inline-block; }
+.ec-legend .name { background: none; border: 0; padding: 0; color: inherit; font: inherit; cursor: pointer; text-align: left; }
+.ec-legend .name:focus-visible, .ec-legend input:focus-visible, .ec-errors button:focus-visible { outline: 2px solid var(--ec-sel); outline-offset: 1px; }
+
+.ec-hud {
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+  display: flex;
+  gap: 12px;
+  padding: 2px 6px;
+  background: var(--ec-panel);
+  border-radius: 4px;
+  pointer-events: none;
+}
+.ec-hud .coords { font-variant-numeric: tabular-nums; }
+.ec-notes {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  max-width: 46%;
+  padding: 4px 8px;
+  background: var(--ec-panel);
+  border: 1px solid var(--ec-border);
+  border-radius: 6px;
+  pointer-events: none;
+}
+.ec-notes p { margin: 2px 0; }
+.ec-notes p.err { color: var(--ec-error); font-weight: 600; }
+.ec-errors {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  transform: translateX(-50%);
+  max-width: 70%;
+  padding: 6px 10px;
+  background: var(--ec-panel);
+  color: var(--ec-error);
+  border: 1px solid var(--ec-error);
+  border-radius: 6px;
+}
+.ec-errors ul { margin: 4px 0; padding-left: 16px; }
+.ec-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

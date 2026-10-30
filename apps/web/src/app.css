@@ -1,0 +1,51 @@
+/* Maquetación del shell de la app. Colores propios --app-*; el lienzo define los suyos (--ec-*) en canvas.css. */
+:root {
+  --app-bg: #f6f7f9;
+  --app-fg: #111827;
+  --app-panel: #ffffff;
+  --app-border: #cbd5e1;
+  --app-accent: #2563eb;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --app-bg: #0b1220;
+    --app-fg: #f3f4f6;
+    --app-panel: #111827;
+    --app-border: #374151;
+    --app-accent: #60a5fa;
+  }
+}
+:root[data-theme="dark"] {
+  --app-bg: #0b1220;
+  --app-fg: #f3f4f6;
+  --app-panel: #111827;
+  --app-border: #374151;
+  --app-accent: #60a5fa;
+  color-scheme: dark;
+}
+
+html, body, #root { height: 100%; margin: 0; }
+body { background: var(--app-bg); color: var(--app-fg); font: 14px/1.4 system-ui, sans-serif; }
+
+.app-shell { display: flex; flex-direction: column; height: 100%; }
+.app-header { display: flex; align-items: baseline; gap: 16px; padding: 4px 12px; border-bottom: 1px solid var(--app-border); background: var(--app-panel); }
+.app-header h1 { margin: 0; font-size: 18px; }
+.app-header p { margin: 0; font-size: 12px; opacity: 0.8; }
+.app-header-extra { margin-left: auto; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 4px 12px; border-bottom: 1px solid var(--app-border); background: var(--app-panel); }
+.tb-group { display: flex; align-items: center; gap: 4px; }
+.toolbar button, .toolbar select {
+  font: inherit; padding: 2px 8px; color: var(--app-fg); background: var(--app-bg);
+  border: 1px solid var(--app-border); border-radius: 4px; cursor: pointer;
+}
+.toolbar button[aria-pressed="true"] { background: var(--app-accent); color: #fff; border-color: var(--app-accent); }
+.toolbar button:disabled { opacity: 0.45; cursor: default; }
+.toolbar button:focus-visible, .toolbar select:focus-visible, .toolbar input:focus-visible { outline: 2px solid var(--app-accent); outline-offset: 1px; }
+.tb-check { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; }
+.app-body { display: flex; flex: 1; min-height: 0; }
+.app-left, .app-right { flex: 0 0 auto; width: 280px; overflow: auto; background: var(--app-panel); }
+.app-left { border-right: 1px solid var(--app-border); }
+.app-right { border-left: 1px solid var(--app-border); }
+.app-canvas { flex: 1; min-width: 0; min-height: 0; position: relative; }
+.app-bottom { flex: 0 0 auto; max-height: 35%; overflow: auto; border-top: 1px solid var(--app-border); background: var(--app-panel); }

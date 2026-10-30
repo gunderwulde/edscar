@@ -1,0 +1,32 @@
+{
+  "name": "@edscar/web",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@edscar/model": "workspace:*",
+    "@edscar/loads": "workspace:*",
+    "@edscar/codes": "workspace:*",
+    "@edscar/solver": "workspace:*",
+    "@edscar/io": "workspace:*",
+    "@edscar/report": "workspace:*",
+    "@edscar/ui-state": "workspace:*",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "happy-dom": "^21.0.4",
+    "vite": "^7.3.7"
+  }
+}

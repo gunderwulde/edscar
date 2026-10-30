@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Instalar pnpm
+        run: npm install -g pnpm@12.16.1
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Lint
+        run: pnpm lint
+      - name: Test
+        run: pnpm test
+      - name: Cobertura (umbral 90 % por paquete, ADR-004)
+        run: pnpm coverage
+      - name: Build (paquetes y apps/web con Vite, ADR-006)
+        run: pnpm build
+      - name: Comprobar dependencias de terceros
+        run: pnpm check-third-party

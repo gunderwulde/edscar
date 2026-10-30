@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "units": "SI",
+  "analysis": "2D-XZ",
+  "nodes": [
+    { "id": "A", "x": 0, "y": 0, "z": 0 },
+    { "id": "B", "x": 6, "y": 0, "z": 0 }
+  ],
+  "members": [
+    { "id": "E1", "i": "A", "j": "B", "material": "MAT1", "section": "SEC1" }
+  ],
+  "materials": [
+    { "id": "MAT1", "name": "Ficticio (EI = 20000 kN m2)", "E": 200000000, "G": 80000000, "density": 0, "alpha": 0.000012 }
+  ],
+  "sections": [
+    { "id": "SEC1", "name": "Seccion ficticia", "A": 0.01, "Iy": 0.0001, "Iz": 0.0001, "J": 0.00001 }
+  ],
+  "supports": [
+    { "id": "SA", "node": "A", "fixed": [true, true, true, false, false, false] },
+    { "id": "SB", "node": "B", "fixed": [false, true, true, false, false, false] }
+  ],
+  "patterns": [
+    { "id": "G", "name": "Carga permanente", "kind": "D", "selfWeightFactor": 0 },
+    { "id": "Q", "name": "Sobrecarga de uso", "kind": "L", "selfWeightFactor": 0 },
+    { "id": "S", "name": "Nieve", "kind": "S", "selfWeightFactor": 0 }
+  ],
+  "loads": [
+    { "id": "L1", "pattern": "G", "type": "member-uniform", "member": "E1", "w": [0, 0, -10], "frame": "global" },
+    { "id": "L2", "pattern": "Q", "type": "member-point", "member": "E1", "p": [0, 0, -20], "at": 0.5, "relative": true, "frame": "global" },
+    { "id": "L3", "pattern": "S", "type": "member-uniform", "member": "E1", "w": [0, 0, -2], "frame": "global" }
+  ],
+  "cases": [
+    { "id": "CG", "name": "G - Permanente", "type": "static-linear", "terms": [{ "pattern": "G", "factor": 1 }] },
+    { "id": "CQ", "name": "Q - Sobrecarga", "type": "static-linear", "terms": [{ "pattern": "Q", "factor": 1 }] },
+    { "id": "CS", "name": "S - Nieve", "type": "static-linear", "terms": [{ "pattern": "S", "factor": 1 }] }
+  ],
+  "combinations": [
+    { "id": "U1", "name": "ELU: 1.35 G + 1.5 Q + 0.75 S", "kind": "ULS", "terms": [{ "ref": "CG", "refType": "case", "factor": 1.35 }, { "ref": "CQ", "refType": "case", "factor": 1.5 }, { "ref": "CS", "refType": "case", "factor": 0.75 }] }
+  ],
+  "settings": { "gravity": [0, 0, -9.81] }
+}

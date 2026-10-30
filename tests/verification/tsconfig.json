@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@edscar/model": ["../../packages/model/src/index.ts"],
+      "@edscar/solver": ["../../packages/solver/src/index.ts"]
+    }
+  },
+  "include": ["./**/*.ts"]
+}

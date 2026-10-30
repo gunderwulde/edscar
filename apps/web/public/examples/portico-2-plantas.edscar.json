@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "units": "SI",
+  "analysis": "2D-XZ",
+  "nodes": [
+    { "id": "N1", "x": 0, "y": 0, "z": 0 },
+    { "id": "N2", "x": 6, "y": 0, "z": 0 },
+    { "id": "N3", "x": 12, "y": 0, "z": 0 },
+    { "id": "N4", "x": 0, "y": 0, "z": 3.5 },
+    { "id": "N5", "x": 6, "y": 0, "z": 3.5 },
+    { "id": "N6", "x": 12, "y": 0, "z": 3.5 },
+    { "id": "N7", "x": 0, "y": 0, "z": 7 },
+    { "id": "N8", "x": 6, "y": 0, "z": 7 },
+    { "id": "N9", "x": 12, "y": 0, "z": 7 }
+  ],
+  "members": [
+    { "id": "P1", "i": "N1", "j": "N4", "material": "ACERO", "section": "PILAR" },
+    { "id": "P2", "i": "N2", "j": "N5", "material": "ACERO", "section": "PILAR" },
+    { "id": "P3", "i": "N3", "j": "N6", "material": "ACERO", "section": "PILAR" },
+    { "id": "P4", "i": "N4", "j": "N7", "material": "ACERO", "section": "PILAR" },
+    { "id": "P5", "i": "N5", "j": "N8", "material": "ACERO", "section": "PILAR" },
+    { "id": "P6", "i": "N6", "j": "N9", "material": "ACERO", "section": "PILAR" },
+    { "id": "V1", "i": "N4", "j": "N5", "material": "ACERO", "section": "VIGA" },
+    { "id": "V2", "i": "N5", "j": "N6", "material": "ACERO", "section": "VIGA", "releases": { "j": { "ry": true } } },
+    { "id": "V3", "i": "N7", "j": "N8", "material": "ACERO", "section": "VIGA" },
+    { "id": "V4", "i": "N8", "j": "N9", "material": "ACERO", "section": "VIGA" }
+  ],
+  "materials": [
+    { "id": "ACERO", "name": "Acero S275 (E = 210 GPa)", "E": 210000000, "G": 80800000, "density": 7.85, "alpha": 0.000012 }
+  ],
+  "sections": [
+    { "id": "PILAR", "name": "Pilar tipo HEB 300 (valores aproximados de tablas)", "A": 0.0149, "Iy": 0.0002517, "Iz": 0.00008563, "J": 0.00000185 },
+    { "id": "VIGA", "name": "Viga tipo IPE 400 (valores aproximados de tablas)", "A": 0.00845, "Iy": 0.0002313, "Iz": 0.00001318, "J": 0.000000511 }
+  ],
+  "supports": [
+    { "id": "S1", "node": "N1", "fixed": [true, true, true, false, true, true] },
+    { "id": "S2", "node": "N2", "fixed": [true, true, true, false, false, true] },
+    { "id": "S3", "node": "N3", "fixed": [true, true, true, false, true, true] }
+  ],
+  "patterns": [
+    { "id": "G", "name": "Permanente (peso propio + forjado)", "kind": "D", "selfWeightFactor": 1 },
+    { "id": "Q", "name": "Sobrecarga de uso", "kind": "L", "selfWeightFactor": 0 },
+    { "id": "W", "name": "Viento (de izquierda a derecha)", "kind": "W", "selfWeightFactor": 0 }
+  ],
+  "loads": [
+    { "id": "G1", "pattern": "G", "type": "member-uniform", "member": "V1", "w": [0, 0, -18], "frame": "global" },
+    { "id": "G2", "pattern": "G", "type": "member-uniform", "member": "V2", "w": [0, 0, -18], "frame": "global" },
+    { "id": "G3", "pattern": "G", "type": "member-uniform", "member": "V3", "w": [0, 0, -12], "frame": "global" },
+    { "id": "G4", "pattern": "G", "type": "member-uniform", "member": "V4", "w": [0, 0, -12], "frame": "global" },
+    { "id": "Q1", "pattern": "Q", "type": "member-uniform", "member": "V1", "w": [0, 0, -10], "frame": "global" },
+    { "id": "Q2", "pattern": "Q", "type": "member-uniform", "member": "V2", "w": [0, 0, -10], "frame": "global", "a": 0, "b": 3 },
+    { "id": "Q3", "pattern": "Q", "type": "member-point", "member": "V3", "p": [0, 0, -40], "at": 0.5, "relative": true, "frame": "global" },
+    { "id": "Q4", "pattern": "Q", "type": "member-trapezoid", "member": "V4", "w1": [0, 0, -2], "w2": [0, 0, -8], "frame": "global", "a": 0, "b": 6 },
+    { "id": "W1", "pattern": "W", "type": "member-uniform", "member": "P1", "w": [4, 0, 0], "frame": "global" },
+    { "id": "W2", "pattern": "W", "type": "member-uniform", "member": "P4", "w": [4, 0, 0], "frame": "global" },
+    { "id": "W3", "pattern": "W", "type": "nodal", "node": "N4", "f": [10, 0, 0], "m": [0, 0, 0] },
+    { "id": "W4", "pattern": "W", "type": "nodal", "node": "N7", "f": [15, 0, 0], "m": [0, 0, 0] }
+  ],
+  "cases": [
+    { "id": "CG", "name": "G - Permanente", "type": "static-linear", "terms": [{ "pattern": "G", "factor": 1 }] },
+    { "id": "CQ", "name": "Q - Sobrecarga", "type": "static-linear", "terms": [{ "pattern": "Q", "factor": 1 }] },
+    { "id": "CW", "name": "W - Viento", "type": "static-linear", "terms": [{ "pattern": "W", "factor": 1 }] }
+  ],
+  "combinations": [
+    { "id": "U1", "name": "ELU: 1.35 G + 1.5 Q", "kind": "ULS", "terms": [{ "ref": "CG", "refType": "case", "factor": 1.35 }, { "ref": "CQ", "refType": "case", "factor": 1.5 }] },
+    { "id": "U2", "name": "ELU: 1.35 G + 1.5 W + 1.05 Q", "kind": "ULS", "terms": [{ "ref": "CG", "refType": "case", "factor": 1.35 }, { "ref": "CW", "refType": "case", "factor": 1.5 }, { "ref": "CQ", "refType": "case", "factor": 1.05 }] },
+    { "id": "S1", "name": "ELS caracteristica: G + Q", "kind": "SLS", "terms": [{ "ref": "CG", "refType": "case", "factor": 1 }, { "ref": "CQ", "refType": "case", "factor": 1 }] }
+  ],
+  "settings": { "gravity": [0, 0, -9.81] }
+}
